@@ -16,6 +16,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export class CustomInputComponent implements ControlValueAccessor {
 
+
+//https://medium.com/@majdasab/implementing-control-value-accessor-in-angular-1b89f2f84ebf
+
   constructor() { }
 
   onChange: any = () => {}
