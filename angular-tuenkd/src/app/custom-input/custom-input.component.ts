@@ -29,6 +29,8 @@ export class CustomInputComponent implements ControlValueAccessor {
     set value(val) {
         if (val !== undefined && this.val !== val) {
             this.val = val
+
+            // Если закомментить this.onChange(val), то external  параметр не изменится
             this.onChange(val)
             this.onTouch(val)
         }
