@@ -1,16 +1,6 @@
+<form [formGroup]="form">
+    <counter-input formControlName="counter"></counter-input>
+</form>
 
-<div style="background:red;">
-    <p>ngModel value: {{outerCounterValue}}</p>
-
-    <form #form="ngForm">
-        <counter-input [ngModel]="outerCounterValue" name="counter" ngModel></counter-input>
-    </form>
-
-    <pre>{{ form.value | json }}</pre>
-</div>
-
-<div style="background:green;">
-    <p>Second varian:</p>
-    <p>ngModel value: {{outerCounterValue}}</p>
-    <counter-input name="counter" [(ngModel)]="outerCounterValue"></counter-input>
-</div>
+<p *ngIf="!form.valid">Counter is invalid!</p>
+<pre>{{ form.value | json }}</pre>
