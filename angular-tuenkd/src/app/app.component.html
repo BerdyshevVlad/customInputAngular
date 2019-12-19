@@ -1,5 +1,8 @@
 <form [formGroup]="form">
-    <counter-input formControlName="counter"></counter-input>
+    <counter-input formControlName="counter" 
+    [counterRangeMax]="maxValue"
+    [counterRangeMin]="minValue"
+     NgModel></counter-input>
 </form>
 
 <p *ngIf="!form.valid">Counter is invalid!</p>

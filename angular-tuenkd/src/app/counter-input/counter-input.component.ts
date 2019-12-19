@@ -1,16 +1,18 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, OnChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl, NG_VALIDATORS } from '@angular/forms';
 
-export function validateCounterRange(c: FormControl) {
-    let err = {
+export function createCounterRangeValidator(maxValue, minValue) {
+    return function validateCounterRange(c: FormControl) {
+      let err = {
         rangeError: {
-            given: c.value,
-            max: 10,
-            min: 0
+          given: c.value,
+          max: maxValue,
+          min: minValue
         }
-    };
-
-    return (c.value > 10 || c.value < 0) ? err : null;
+      };
+  
+      return (c.value > +maxValue || c.value < +minValue) ? err: null;
+    }
 }
 
 @Component({
@@ -24,18 +26,22 @@ export function validateCounterRange(c: FormControl) {
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => CounterInputComponent),
         multi: true
-    },
-    {
-        provide: NG_VALIDATORS,
-        useValue: validateCounterRange,
-        multi: true
     }
     ]
 })
 
-export class CounterInputComponent implements ControlValueAccessor {
+export class CounterInputComponent implements ControlValueAccessor, OnInit,OnChanges  {
 
     propagateChange = (_: any) => { };
+
+    validateFn:Function;
+
+
+    @Input()
+    counterRangeMax;
+  
+    @Input()
+    counterRangeMin;
 
     @Input()
     _counterValue = 0;
@@ -48,6 +54,21 @@ export class CounterInputComponent implements ControlValueAccessor {
         this._counterValue = val;
         this.propagateChange(this._counterValue);
     }
+
+    // ngOnInit() {
+    //     this.validateFn = createCounterRangeValidator(this.counterRangeMax, this.counterRangeMin);
+    //   }
+
+      //instead ng on init; see diff
+      ngOnChanges(changes) {
+        if (changes.counterRangeMin || changes.counterRangeMax) {
+          this.validateFn = createCounterRangeValidator(this.counterRangeMax, this.counterRangeMin);
+        }
+    }
+
+      validate(c: FormControl) {
+        return this.validateFn(c);
+      }
 
     increment() {
         this.counterValue++;
