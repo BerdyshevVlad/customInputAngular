@@ -1,9 +1,11 @@
-<p>
-input:
-</p>
+<p>ngModel value: {{outerCounterValue}}</p>
 
-  <app-custom-input [(ngModel)]="external" name="externalVal" #validations="ngModel"></app-custom-input>
-  external: {{external}}
-  <p>{{validations.control | json}}</p>
+<form #form="ngForm">
+    <counter-input [ngModel]="outerCounterValue" name="counter" ngModel></counter-input>
+  </form>
 
+  <pre>{{ form.value | json }}</pre>
 
+<p>Second varian:</p>
+<p>ngModel value: {{outerCounterValue}}</p>
+<counter-input name="counter" [(ngModel)]="outerCounterValue"></counter-input>
